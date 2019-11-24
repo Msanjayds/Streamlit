@@ -39,7 +39,7 @@ def main():
         st.subheader('# of Crimes by Day of Month')
         st.write(pd.DataFrame(grp_data.groupby(['C_Day of month'], sort=False)['Count'].count().rename_axis(["Day of Month"])))
 
-    # Bar chart to show the Top 10 cromes using plotly
+    # Bar chart to show the Top 10 Crimes using plotly
     st.subheader(" Top 10 Crimes ")
     grp_data = crime_data.copy()
     grp_data['Count'] = 1
@@ -52,12 +52,12 @@ def main():
                  labels={'Crime': 'Crime Type', 'Count': 'Crime Count'})
     st.plotly_chart(fig)
 
-   # create a slider to select the required day of month
+   # Slider to select the required day of month to analyse
     st.subheader('Crime Location on Map - Select the day of a Month')
     Day_filter = st.slider('', 1, 31, 5)
     Crime_Filter = crime_data[crime_data['C_Day of month'] == Day_filter]
 
-    # Create a Map to show the physical locations of crime for the selected day.
+    # Map to show the physical locations of Crime for the selected day.
     midpoint = (np.average(Crime_Filter["lat"]), np.average(Crime_Filter["lon"]))
 
     st.deck_gl_chart(
