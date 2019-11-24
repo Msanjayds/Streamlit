@@ -14,6 +14,7 @@ def main():
     image = Image.open('sacramento.jpg')
     st.image(image, caption='Sacramento,California (source-wiki)', use_column_width=True)
 
+   # Function to load the data and cache it
     @st.cache
     def load_data():
         data = pd.read_csv('california_crimeinfo.csv')
@@ -22,12 +23,14 @@ def main():
     # load data and cache it using Streamlit cache
     crime_data = load_data()
 
+    # Create a Check box to display the raw data.
     if st.checkbox('Show raw data'):
         st.subheader('Raw data')
         load_state = st.text('Loading Data..')
         st.write(crime_data)
         load_state.text('Loading Completed!')
 
+    # Create a Check box to show few summary details.
     if st.checkbox('Crime Summary'):
         grp_data = crime_data.copy()
         grp_data['Count'] = 1
@@ -35,6 +38,8 @@ def main():
         st.write(pd.DataFrame(grp_data.groupby(['C_Descrip'], sort=False)['Count'].count().rename_axis(["Type of Crime"]).nlargest(50)))
         st.subheader('# of Crimes by Day of Month')
         st.write(pd.DataFrame(grp_data.groupby(['C_Day of month'], sort=False)['Count'].count().rename_axis(["Day of Month"])))
+
+    # Bar chart to show the Top 10 cromes using plotly
     st.subheader(" Top 10 Crimes ")
     grp_data = crime_data.copy()
     grp_data['Count'] = 1
@@ -47,10 +52,12 @@ def main():
                  labels={'Crime': 'Crime Type', 'Count': 'Crime Count'})
     st.plotly_chart(fig)
 
+   # create a slider to select the required day of month
     st.subheader('Crime Location on Map - Select the day of a Month')
     Day_filter = st.slider('', 1, 31, 5)
     Crime_Filter = crime_data[crime_data['C_Day of month'] == Day_filter]
 
+    # Create a Map to show the physical locations of crime for the selected day.
     midpoint = (np.average(Crime_Filter["lat"]), np.average(Crime_Filter["lon"]))
 
     st.deck_gl_chart(
@@ -73,6 +80,7 @@ def main():
         ],
     )
 
+    # Histogram to show the no of Crimes by Hour for the selcted day of month.
     hist_values = np.histogram(Crime_Filter['C_Hour'], bins=24, range=(0, 23))[0]
     st.bar_chart(hist_values)
     st.write('--------------------------------- No. of Crimes by Hour in a given day ---------------------------------')
