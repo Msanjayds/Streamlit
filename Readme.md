@@ -1,10 +1,6 @@
-#iris-eda-app
-Simple iris eda app
+# Webapplications built using Streamlit
 
-#Requirement files
-1. setup.sh
-2. Procfile
-3. requirements.txt
+1. California - Interactive Crime rate analysis of California City
 
 
 
