@@ -1,4 +1,5 @@
 # _Webapplications built using Streamlit_
+-------------------------------------------
 
 1. **California Crime Rate** - Interactive Crime rate analysis of California City using Streamlit
    
